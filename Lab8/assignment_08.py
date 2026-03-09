@@ -28,7 +28,10 @@ def int2GF2(i):
         >>> int2GF2(100)
         0
     '''
-    pass
+    if i % 2 == 0:
+        return 0
+    else:
+        return one
 
 ## Task 2
 def make_Vec(primeset, factors):
@@ -44,7 +47,7 @@ def make_Vec(primeset, factors):
         >>> make_Vec({2,3,11}, [(2,3), (3,2)]) == Vec({2,3,11},{2:one})
         True
     '''
-    pass
+    
 
 ## Task 3
 def find_candidates(N, primeset):
@@ -111,4 +114,8 @@ def find_a_and_b(v, roots, N):
 
 ## Task 5
 
-nontrivial_divisor_of_2461799993978700679 = ... 
+nontrivial_divisor_of_2461799993978700679 = ...
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
