@@ -131,11 +131,20 @@ def find_a_and_b(v, roots, N):
         >>> find_a_and_b(v, roots, N)
         (4081, 1170)
     '''
-    
+    a = 1
+    c = 1
+
+    for i in range(len(roots)):
+        if v[i] == one:
+            a *= roots[i]
+            c *= (roots[i]**2 - N)
+    b = intsqrt(c)
+
+    return a, b
 
 ## Task 5
 
-nontrivial_divisor_of_2461799993978700679 = ...
+nontrivial_divisor_of_2461799993978700679 = 1230926561
 
 if __name__ == "__main__":
     import doctest
