@@ -9,6 +9,7 @@ from factoring_support import intsqrt
 from factoring_support import gcd
 from factoring_support import primes
 from factoring_support import prod
+import math
 
 import echelon
 
@@ -28,10 +29,8 @@ def int2GF2(i):
         >>> int2GF2(100)
         0
     '''
-    if i % 2 == 0:
-        return 0
-    else:
-        return one
+
+    return 0 if i % 2 == 0 else one
 
 ## Task 2
 def make_Vec(primeset, factors):
@@ -47,7 +46,17 @@ def make_Vec(primeset, factors):
         >>> make_Vec({2,3,11}, [(2,3), (3,2)]) == Vec({2,3,11},{2:one})
         True
     '''
+
+    values = {}
+
+    for prime, exp in factors:
+        if int2GF2(exp) == 0:
+            continue
+        exp = int2GF2(exp)
+        values[prime] = exp
     
+    return Vec(primeset, values)
+
 
 ## Task 3
 def find_candidates(N, primeset):
@@ -85,8 +94,20 @@ def find_candidates(N, primeset):
                 Vec(D,{2: one, 3: one, 13: one})])
         True
     '''
-    pass
+    roots = []
+    row_list = []
 
+    x = intsqrt(N) + 2
+    # x = math.floor(math.sqrt(N))
+
+    while len(roots) <= len(primeset):
+        fac = dumb_factor(x**2 - N, primeset)
+        if fac:
+            roots.append(x)
+            row_list.append(make_Vec(primeset, fac))
+        x+=1
+    
+    return roots, row_list
 
 
 ## Task 4
@@ -110,7 +131,7 @@ def find_a_and_b(v, roots, N):
         >>> find_a_and_b(v, roots, N)
         (4081, 1170)
     '''
-    pass
+    
 
 ## Task 5
 
