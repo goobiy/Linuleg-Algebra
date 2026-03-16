@@ -118,14 +118,18 @@ def distance_to_subspace(L, u):
     >>> round(distance_to_subspace(L, u), 6)
     4.0
     '''
-    orth_basis = orthonormalize(L)
-    proj_onto_sub = Vec(u.D, {})
+    if not L:
+        return norm(u)
+    
+    orth_basis = [v for v in orthogonalize(L) if norm(v) > EPS]
+    onb = [normalize(v) for v in orth_basis]
+    proj = Vec(u.D, {})
 
-    for i in orth_basis:
-        proj_onto_sub = proj_onto_sub + inner_product(u,i) * i
-    residual = u - proj_onto_sub
 
-    return norm(residual)
+    for i in onb:
+        proj = proj + inner_product(u,i) * i
+
+    return norm(u - proj)
 
 
 def is_orthonormal_basis(L):
