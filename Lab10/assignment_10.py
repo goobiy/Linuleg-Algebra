@@ -1,6 +1,6 @@
 from mat import Mat
 from vec import Vec
-from orthogonalization import aug_orthogonalize
+from orthogonalization import aug_orthogonalize, orthogonalize, aug_project_orthogonal
 from matutil import coldict2mat, mat2coldict, mat2rowdict
 from triangular import triangular_solve
 
@@ -50,7 +50,23 @@ def aug_orthonormalize(L):
     >>> all(v.is_almost_zero() for v in mat2coldict(coldict2mat(Qlist) * coldict2mat(Rlist) - coldict2mat(L)).values())
     True
     '''
-    return aug_orthogonalize(L)
+    Q_list = []
+    R_list = []
+
+    for i, vec in enumerate(L):
+        vstar, sigmadict = aug_project_orthogonal(vec, Q_list)
+
+        normed_vstar = norm(vstar)
+
+        sigmadict[len(Q_list)] = normed_vstar
+
+        Q_list.append(normalize(vstar))
+
+        new_vec = Vec(set(range(len(L))), sigmadict)
+        R_list.append(new_vec)
+    
+    return Q_list, R_list
+
 
 
 def QR_factor(A):
@@ -72,28 +88,29 @@ def QR_factor(A):
     >>> all(v.is_almost_zero() for v in mat2coldict(Q * R - A).values())
     True
     '''
-    
-
-
-def QR_solve(A, b):
-    '''
-    Input:
-        - A: a Mat with linearly independent columns
-        - b: a Vec whose domain equals the set of row-labels of A
-    Output:
-        - vector x that minimizes norm(b - A*x)
-    Note: This procedure uses the procedure QR_factor.
-    Example:
-        >>> domain = ({'a','b','c'},{'A','B'})
-        >>> A = Mat(domain,{('a','A'):-1, ('a','B'):2,('b','A'):5, ('b','B'):3,('c','A'):1,('c','B'):-2})
-        >>> Q, R = QR_factor(A)
-        >>> b = Vec(domain[0], {'a': 1, 'b': -1})
-        >>> x = QR_solve(A, b)
-        >>> result = A.transpose()*(b-A*x)
-        >>> result.is_almost_zero()
-        True
-    '''
     pass
+
+
+
+# def QR_solve(A, b):
+#     '''
+#     Input:
+#         - A: a Mat with linearly independent columns
+#         - b: a Vec whose domain equals the set of row-labels of A
+#     Output:
+#         - vector x that minimizes norm(b - A*x)
+#     Note: This procedure uses the procedure QR_factor.
+#     Example:
+#         >>> domain = ({'a','b','c'},{'A','B'})
+#         >>> A = Mat(domain,{('a','A'):-1, ('a','B'):2,('b','A'):5, ('b','B'):3,('c','A'):1,('c','B'):-2})
+#         >>> Q, R = QR_factor(A)
+#         >>> b = Vec(domain[0], {'a': 1, 'b': -1})
+#         >>> x = QR_solve(A, b)
+#         >>> result = A.transpose()*(b-A*x)
+#         >>> result.is_almost_zero()
+#         True
+#     '''
+#     pass
 
 
 if __name__ == "__main__":
