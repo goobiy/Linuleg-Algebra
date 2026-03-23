@@ -88,32 +88,52 @@ def QR_factor(A):
     >>> all(v.is_almost_zero() for v in mat2coldict(Q * R - A).values())
     True
     '''
-    pass
+    col_dict = mat2coldict(A)
+
+
+    Q_list, R_list = aug_orthonormalize(list(col_dict.values()))
+
+    keys = list(col_dict.keys())
+    intkeys = list(range(len(Q_list)))
+    Q_mat = coldict2mat(dict(zip(intkeys,Q_list)))
+    R_mat = coldict2mat(dict(zip(keys,R_list)))
+
+    return Q_mat, R_mat
 
 
 
-# def QR_solve(A, b):
-#     '''
-#     Input:
-#         - A: a Mat with linearly independent columns
-#         - b: a Vec whose domain equals the set of row-labels of A
-#     Output:
-#         - vector x that minimizes norm(b - A*x)
-#     Note: This procedure uses the procedure QR_factor.
-#     Example:
-#         >>> domain = ({'a','b','c'},{'A','B'})
-#         >>> A = Mat(domain,{('a','A'):-1, ('a','B'):2,('b','A'):5, ('b','B'):3,('c','A'):1,('c','B'):-2})
-#         >>> Q, R = QR_factor(A)
-#         >>> b = Vec(domain[0], {'a': 1, 'b': -1})
-#         >>> x = QR_solve(A, b)
-#         >>> result = A.transpose()*(b-A*x)
-#         >>> result.is_almost_zero()
-#         True
-#     '''
-#     pass
+def QR_solve(A, b):
+    '''
+    Input:
+        - A: a Mat with linearly independent columns
+        - b: a Vec whose domain equals the set of row-labels of A
+    Output:
+        - vector x that minimizes norm(b - A*x)
+    Note: This procedure uses the procedure QR_factor.
+    Example:
+        >>> domain = ({'a','b','c'},{'A','B'})
+        >>> A = Mat(domain,{('a','A'):-1, ('a','B'):2,('b','A'):5, ('b','B'):3,('c','A'):1,('c','B'):-2})
+        >>> Q, R = QR_factor(A)
+        >>> b = Vec(domain[0], {'a': 1, 'b': -1})
+        >>> x = QR_solve(A, b)
+        >>> result = A.transpose()*(b-A*x)
+        >>> result.is_almost_zero()
+        True
+    '''
+    Q_mat, R_mat = QR_factor(A)
 
+    Q_inverse_mult_b = Q_mat.transpose() * b
+
+    R_row_dict = mat2rowdict(R_mat)
+
+    row_list = [R_row_dict[i] for i in range(len(R_row_dict))]
+
+    label_list = list(R_mat.D[1])
+
+    x = triangular_solve(row_list, label_list, Q_inverse_mult_b)
+
+    return x
 
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
-
