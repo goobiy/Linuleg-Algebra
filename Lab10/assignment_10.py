@@ -50,20 +50,23 @@ def aug_orthonormalize(L):
     >>> all(v.is_almost_zero() for v in mat2coldict(coldict2mat(Qlist) * coldict2mat(Rlist) - coldict2mat(L)).values())
     True
     '''
-    Q_list = []
-    R_list = []
 
-    for i, vec in enumerate(L):
-        vstar, sigmadict = aug_project_orthogonal(vec, Q_list)
+    Q_list, R_list = aug_orthogonalize(L)
 
-        normed_vstar = norm(vstar)
+    norms = []
 
-        sigmadict[len(Q_list)] = normed_vstar
-
-        Q_list.append(normalize(vstar))
-
-        new_vec = Vec(set(range(len(L))), sigmadict)
-        R_list.append(new_vec)
+    for i in range(len(Q_list)):
+        normalized = norm(Q_list[i])
+        norms.append(normalized)
+        if normalized != 0:
+            Q_list[i] = (1 / normalized) * Q_list[i]
+    
+    for j in range(len(R_list)):
+        new_f = {}
+        for k in R_list[j].f:
+            new_f[k] = norms[k] * R_list[j][k]
+        
+        R_list[j] = Vec(R_list[j].D, new_f)
     
     return Q_list, R_list
 
