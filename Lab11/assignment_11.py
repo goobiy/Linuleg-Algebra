@@ -83,5 +83,16 @@ def solve_least_squares(A, b):
     Output:
         - A Vec representing the least-squares solution x
     '''
-    pass
+    U, S, V = svd.factor(A)
 
+    S_plus = {}
+    for key, val in S.f.items():
+        if key[0] == key[1] and val != 0:
+            S_plus[key] = 1/val
+        else:
+            S_plus[key] = 0
+    S_plus_mat = Mat((S.D[0], S.D[1]), S_plus)
+
+    U_T = U.transpose()
+
+    return V * S_plus_mat * U_T * b
