@@ -1,5 +1,5 @@
-from lab4.mat import Mat
-from lab3.vec import Vec
+from mat import Mat
+from vec import Vec
 from math import cos, sin, radians
 
 
@@ -34,7 +34,10 @@ def identity_matrix(D):
       >>> identity_matrix({'x', 'y'}) == Mat(({'x', 'y'}, {'x', 'y'}), {('x', 'x'): 1, ('y', 'y'): 1})
       True
     '''
-    pass
+    new_dom = {}
+    for k in D:
+        new_dom[(k,k)] = 1
+    return Mat((D,D), new_dom)
 
 
 def are_inverses(A, B):
