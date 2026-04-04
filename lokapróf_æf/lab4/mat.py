@@ -135,6 +135,7 @@ def transpose(M):
             transd[c,r] = M[r,c]
     return Mat((M.D[1], M.D[0]), transd)
 
+
 def vector_matrix_mul(v, M):
     """
     returns the product of vector v and matrix M
@@ -160,7 +161,13 @@ def vector_matrix_mul(v, M):
     True
     """
     assert M.D[0] == v.D
-    pass
+    new_dom = {}
+    for c in M.D[1]:
+        total = 0
+        for r in M.D[0]:
+            total += v[r] * M[r,c]
+        new_dom[c] = total
+    return Vec(M.D[1], new_dom)
 
 
 def matrix_vector_mul(M, v):
@@ -188,7 +195,13 @@ def matrix_vector_mul(M, v):
     True
     """
     assert M.D[1] == v.D
-    pass
+    new_dom = {}
+    for r in M.D[0]:
+        total = 0
+        for c in M.D[1]:
+            total += v[c] * M[r,c]
+        new_dom[r] = total
+    return Vec(M.D[0], new_dom)
 
 
 def matrix_matrix_mul(A, B):
@@ -218,7 +231,15 @@ def matrix_matrix_mul(A, B):
     True
     """
     assert A.D[1] == B.D[0]
-    pass
+    new_dom = {}
+    for r in A.D[0]:
+        for c in B.D[1]:
+            total = 0
+            for elem in A.D[1]: # elem is the shared index
+                total += A[r,elem] * B[elem,c]
+            new_dom[r,c] = total
+    return Mat((A.D[0], B.D[1]), new_dom)
+
 
 
 ################################################################################
