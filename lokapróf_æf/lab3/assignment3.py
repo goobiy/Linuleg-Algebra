@@ -1,4 +1,4 @@
-from lab3.vec import Vec
+from vec import Vec
 
 def secret_function(u, v, w):
     """

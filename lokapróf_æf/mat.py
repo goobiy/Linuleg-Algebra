@@ -1,5 +1,5 @@
 # Copyright 2013 Philip N. Klein
-from lab3.vec import Vec
+from vec import Vec
 
 
 def getitem(M, k):

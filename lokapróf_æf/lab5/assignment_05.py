@@ -1,5 +1,7 @@
-from lab4.mat import Mat
-from lab3.vec import Vec
+import sys
+sys.path.append('..')
+from mat import Mat
+from vec import Vec
 from math import cos, sin, radians
 
 
