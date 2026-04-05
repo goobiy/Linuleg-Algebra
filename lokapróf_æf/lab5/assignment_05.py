@@ -109,7 +109,7 @@ def rotate_2d(v, deg):
       True
     '''
     assert len(v.D) == 2
-    pass
+    return rotation_matrix_2d(v.D,deg) *v
 
 
 
