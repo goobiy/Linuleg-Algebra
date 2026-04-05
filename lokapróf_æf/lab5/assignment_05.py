@@ -1,3 +1,5 @@
+import sys
+sys.path.append('..')
 from mat import Mat
 from vec import Vec
 from math import cos, sin, radians
@@ -58,7 +60,8 @@ def are_inverses(A, B):
       False
     '''
     assert A.D[0] == B.D[1] and A.D[1] == B.D[0]
-    pass
+    return is_almost_equal(A*B, identity_matrix(A.D[0])) and is_almost_equal(B*A, identity_matrix(A.D[1]))
+        
 
 
 def rotation_matrix_2d(D, deg):
@@ -77,7 +80,16 @@ def rotation_matrix_2d(D, deg):
       >>> is_almost_equal(rotation_matrix_2d({'x', 'y'}, 180), Mat(({'x', 'y'}, {'x', 'y'}), {('x', 'x'): -1.0, ('x', 'y'): -0.0, ('y', 'x'): 0.0, ('y', 'y'): -1.0}))
       True
     '''
-    pass
+    rad = radians(deg)
+    d = sorted(D)
+    new_dom = {}
+
+    new_dom[(d[0],d[0])] = cos(rad)
+    new_dom[(d[0],d[1])] = -sin(rad)
+    new_dom[(d[1],d[0])] = sin(rad)
+    new_dom[(d[1],d[1])] = cos(rad)
+
+    return Mat((D,D), new_dom)
 
 
 def rotate_2d(v, deg):
