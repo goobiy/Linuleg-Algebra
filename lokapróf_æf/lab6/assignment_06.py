@@ -52,7 +52,10 @@ def is_independent(L):
         >>> is_independent(vlist[:2])
         True
     '''
-    pass
+    for i in range(len(L)):
+        if is_superfluous(L, i):
+            return False
+    return True
 
 
 def is_dependent(L):
@@ -68,7 +71,7 @@ def is_dependent(L):
         >>> is_dependent(vlist[:2])
         False
     '''
-    pass
+    return not is_independent(L)
 
 
 def subset_basis(T):
@@ -95,7 +98,13 @@ def subset_basis(T):
         >>> all(is_superfluous([a]+sb, 0) for a in [a0, a1, a2, a3])
         True
     '''
-    pass
+    sub = []
+    for vec in T:
+        sub.append(vec)
+        if is_superfluous(sub, len(sub)-1):
+            sub.pop(len(sub)-1)
+    return sub
+
 
 
 if __name__ == "__main__":
