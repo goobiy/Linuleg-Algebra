@@ -1,4 +1,5 @@
 from lab3.vec import Vec
+
 def secret_function(u, v, w):
     """
     Input: u, v, w: Vec objects that have the same domain.
