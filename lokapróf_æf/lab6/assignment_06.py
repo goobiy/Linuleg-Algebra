@@ -1,6 +1,8 @@
+import sys
+sys.path.append('..')
+from vec import Vec
 from matutil import coldict2mat
 from solver import solve
-from vec import Vec
 
 
 EPS = 1e-14
@@ -95,3 +97,7 @@ def subset_basis(T):
     '''
     pass
 
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
