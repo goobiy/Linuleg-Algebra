@@ -29,20 +29,25 @@ def find_eigenvalues_and_vectors(A):
     trace = A[0,0] + A[1,1]
     det = A[0,0]*A[1,1] - A[1,0]*A[0,1]
 
-    lam1 = (trace + math.sqrt(trace**2 - 4*det)) / 2
-    lam2 = (trace - math.sqrt(trace**2 - 4*det)) / 2
-
     eigvals = []
     eigvecs = []
 
-    eigvals.append(lam1)
-    eigvals.append(lam2)
+    discrim = (trace**2 - 4*det)
+    if discrim > 0:
+        lam1 = (trace + math.sqrt(discrim)) / 2
+        lam2 = (trace - math.sqrt(discrim)) / 2
 
-    eigenvec1 = nullspace(A - lam1*identity(A.D[1], 1))
-    eigenvec2 = nullspace(A - lam2*identity(A.D[1], 1))
+        eigenvec1 = nullspace(A - lam1*identity(A.D[1], 1))
+        eigenvec2 = nullspace(A - lam2*identity(A.D[1], 1))
 
-    eigvecs.append(eigenvec1[0])
-    eigvecs.append(eigenvec2[0])
+        eigvals.append(lam1)
+        eigvals.append(lam2)
+
+        eigvecs.append(eigenvec1[0])
+        eigvecs.append(eigenvec2[0])
+
+    elif discrim == 0:
+
 
     return (eigvals, eigvecs)
 
