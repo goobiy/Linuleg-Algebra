@@ -47,7 +47,13 @@ def find_eigenvalues_and_vectors(A):
         eigvecs.append(eigenvec2[0])
 
     elif discrim == 0:
+        lam = trace / 2
 
+        eigvec = nullspace(A - lam*identity(A.D[1], 1))
+
+        for vec in eigvec:
+            eigvecs.append(vec)
+            eigvals.append(lam)
 
     return (eigvals, eigvecs)
 
