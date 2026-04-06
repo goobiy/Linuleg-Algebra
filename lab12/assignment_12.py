@@ -55,7 +55,10 @@ def is_diagonalizable(A):
     Output:
         - True if A is diagonalizable, False otherwise
     '''
-    pass
+    eigvals, eigvecs = find_eigenvalues_and_vectors(A)
+
+    
+    return len(A.D[0]) == len(eigvecs)
 
 
 def construct_markov_matrix(a, b):
@@ -67,7 +70,14 @@ def construct_markov_matrix(a, b):
     Output:
         - A: a 2x2 column-stochastic matrix with parameters a and b with D = ({0, 1}, {0, 1})
     '''
-    pass
+    dom = {}
+
+    dom[(0,0)] = 1-a
+    dom[(0,1)] = b
+    dom[(1,0)] = a
+    dom[(1,1)] = 1-b
+
+    return Mat(({0,1}, {0,1}), dom)
 
 
 def markov_eigenvalues_and_vectors(a, b):
@@ -80,5 +90,7 @@ def markov_eigenvalues_and_vectors(a, b):
         - eigenvalues: a list of eigenvalues
         - eigenvectors: a list of corresponding eigenvectors
     '''
-    pass
+    mat = construct_markov_matrix(a,b)
+
+    return find_eigenvalues_and_vectors(mat)
 
